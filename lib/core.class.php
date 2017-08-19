@@ -15,7 +15,7 @@ class Core extends Database
     }
 
     function cekQuran(){
-        $query = $this->link->query("SELECT idAyat, Terjemahan FROM albaqarah");
+        $query = $this->link->query("SELECT idAyat, Terjemahan FROM albaqarah where idAyat=31");
         $result = mysqli_num_rows($query);
         return $query;
     }
