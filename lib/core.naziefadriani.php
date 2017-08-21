@@ -14,10 +14,26 @@ class Core extends Database
         $this->link = parent::connect();
     }
 
-    function cekQuran(){
-        $query = $this->link->query("SELECT idAyat, Terjemahan FROM albaqarah where idAyat !=31 and idAyat!=61 and idAyat!=109 and idAyat!=114 and idAyat!=120 and idAyat!=148 and idAyat!=164 and idAyat!=197 and idAyat!=207 and idAyat!=215 and idAyat!=217 and idAyat!=247 and idAyat!=257 and idAyat!=264 and idAyat!=268 and idAyat!=270 and idAyat!=273 and idAyat!=282 ");
+    /*function cekQuran(){
+        $query = $this->link->query("SELECT idAyat, Terjemahan FROM albaqarah where idAyat !=31 and idAyat!=61 and idAyat!=109 and idAyat!=114 and idAyat!=120 and idAyat!=148 and idAyat!=164 and idAyat!=197 and idAyat!=207 and idAyat!=215 and idAyat!=217 and idAyat!=247 and idAyat!=257 and idAyat!=264 and idAyat!=268 and idAyat!=270 and idAyat!=273 and idAyat!=282");
         $result = mysqli_num_rows($query);
         return $query;
+    }*/
+    function cekQuran(){
+        $query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_filtering where idAyat !=109 and idAyat!=148 and idAyat!=164 and idAyat!=207 and idAyat!=217 and idAyat!=247 and idAyat!=264 and idAyat!=282");
+        $result = mysqli_num_rows($query);
+        return $query;
+    }
+/*    function cekQuran(){
+        $query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_filtering where idAyat=30");
+        $result = mysqli_num_rows($query);
+        return $query;
+    }*/
+    function insertFiltering($d,$t){
+        $query = $this->link->query("INSERT INTO temp_filtering  VALUES ('$d','$t')");
+    }
+    function insertStemming($d,$t){
+        $query = $this->link->query("INSERT INTO temp_stemming  VALUES ('$d','$t')");
     }
     function cariStopword($kata){
         //var_dump($kata);
@@ -36,20 +52,8 @@ class Core extends Database
     }
 }
 
-//fungsi untuk menghapus suffix seperti -ku, -mu, -kah, dsb
-function Del_Inflection_Suffixes($kata){ 
-    $kataAsal = $kata;
-    
-    if(preg_match('/([km]u|nya|[kl]ah|pun)\z/i',$kata)){ // Cek Inflection Suffixes
-        $__kata = preg_replace('/([km]u|nya|[kl]ah|pun)\z/i','',$kata);
-
-        return $__kata;
-    }
-    return $kataAsal;
-}
-
 // Cek Prefix Disallowed Sufixes (Kombinasi Awalan dan Akhiran yang tidak diizinkan)
-function Cek_Prefix_Disallowed_Sufixes($kata){
+function antiAwalAkhir($kata){
 
     if(preg_match('/^(be)[[:alpha:]]+/(i)\z/i',$kata)){ // be- dan -i
         return true;
@@ -73,8 +77,20 @@ function Cek_Prefix_Disallowed_Sufixes($kata){
     return false;
 }
 
+//fungsi untuk menghapus suffix seperti -ku, -mu, -kah, dsb
+function hapusAkhiran1($kata){ 
+    $kataAsal = $kata;
+    
+    if(preg_match('/([km]u|nya|[kl]ah|pun)\z/i',$kata)){ // Cek Inflection Suffixes
+        $__kata = preg_replace('/([km]u|nya|[kl]ah|pun)\z/i','',$kata);
+
+        return $__kata;
+    }
+    return $kataAsal;
+}
+
 // Hapus Derivation Suffixes ("-i", "-an" atau "-kan")
-function Del_Derivation_Suffixes($kata){
+function hapusAkhiran2($kata){
     $kataAsal = $kata;
     if(preg_match('/(i|an)\z/i',$kata)){ // Cek Suffixes
         $__kata = preg_replace('/(i|an)\z/i','',$kata);
@@ -92,7 +108,7 @@ function Del_Derivation_Suffixes($kata){
 }
 
 // Hapus Derivation Prefix ("di-", "ke-", "se-", "te-", "be-", "me-", atau "pe-")
-function Del_Derivation_Prefix($kata){
+function hapusAwalan($kata){
     $kataAsal = $kata;
 
     /* —— Tentukan Tipe Awalan ————*/
@@ -103,7 +119,7 @@ function Del_Derivation_Prefix($kata){
             return $__kata;
         }
         
-        $__kata__ = $this->Del_Derivation_Suffixes($__kata);
+        $__kata__ = $this->hapusAkhiran2($__kata);
 
         if($this->cekKamus($__kata__)){
             return $__kata__;
@@ -111,7 +127,7 @@ function Del_Derivation_Prefix($kata){
         
         if(preg_match('/^(diper)/',$kata)){ //diper-
             $__kata = preg_replace('/^(diper)/','',$kata);
-            $__kata__ = $this->Del_Derivation_Suffixes($__kata);
+            $__kata__ = $this->hapusAkhiran2($__kata);
 
             if($this->cekKamus($__kata__)){
                 return $__kata__;
@@ -121,7 +137,7 @@ function Del_Derivation_Prefix($kata){
         
         if(preg_match('/^(ke[bt]er)/',$kata)){  //keber- dan keter-
             $__kata = preg_replace('/^(ke[bt]er)/','',$kata);
-            $__kata__ = Del_Derivation_Suffixes($__kata);
+            $__kata__ = hapusAkhiran2($__kata);
 
             if($this->cekKamus($__kata__)){
                 return $__kata__;
@@ -142,7 +158,7 @@ function Del_Derivation_Prefix($kata){
             return $__kata; // Jika ada balik
         }   
         
-        $__kata__ = $this->Del_Derivation_Suffixes($__kata);
+        $__kata__ = $this->hapusAkhiran2($__kata);
         if($this->cekKamus($__kata__)){
             return $__kata__;
         }
@@ -153,7 +169,7 @@ function Del_Derivation_Prefix($kata){
         if($this->cekKamus($__kata)){
             return $__kata; // Jika ada balik
         }
-        $__kata__ = $this->Del_Derivation_Suffixes($__kata);
+        $__kata__ = $this->hapusAkhiran2($__kata);
         if($this->cekKamus($__kata__)){
             return $__kata__;
         }
@@ -163,18 +179,38 @@ function Del_Derivation_Prefix($kata){
             if($this->cekKamus($kata)){
                 return $__kata;
             }
-            $__kata__ = $this->Del_Derivation_Suffixes($__kata);
+            $__kata__ = $this->hapusAkhiran2($__kata);
             if($this->cekKamus($__kata__)){
                 return $__kata__;
             }
         }
-        
-        if(preg_match('/^([mp]eng)/',$kata)){
-            $__kata = preg_replace('/^([mp]eng)/','',$kata);
-            if($this->cekKamus($__kata)){
+
+        if (preg_match('/^([mp]enge)/', $kata)) {
+            # code...
+            $__kata = preg_replace('/^([mp]enge)/','',$kata);
+            if($this->cekKamus($kata)){
+               return $__kata;
+           }
+           $__kata__ = $this->hapusAkhiran2($__kata);
+           if($this->cekKamus($__kata__)){
+               return $__kata__;
+           }
+           $__kata = preg_replace('/^([mp]enge)/','k',$kata);
+           if($this->cekKamus($kata)){
+            return $__kata;
+        }
+        $__kata__ = $this->hapusAkhiran2($__kata);
+        if($this->cekKamus($__kata__)){
+            return $__kata__;
+        }
+    }
+    
+    if(preg_match('/^([mp]eng)/',$kata)){
+        $__kata = preg_replace('/^([mp]eng)/','',$kata);
+        if($this->cekKamus($__kata)){
                 return $__kata; // Jika ada balik
             }
-            $__kata__ = $this->Del_Derivation_Suffixes($__kata);
+            $__kata__ = $this->hapusAkhiran2($__kata);
             if($this->cekKamus($__kata__)){
                 return $__kata__;
             }
@@ -183,18 +219,19 @@ function Del_Derivation_Prefix($kata){
             if($this->cekKamus($__kata)){
                 return $__kata; // Jika ada balik
             }
-            $__kata__ = Del_Derivation_Suffixes($__kata);
+            $__kata__ = hapusAkhiran2($__kata);
             if($this->cekKamus($__kata__)){
                 return $__kata__;
             }
         }
+
         
         if(preg_match('/^([mp]eny)/',$kata)){
             $__kata = preg_replace('/^([mp]eny)/','s',$kata);
             if($this->cekKamus($__kata)){
                 return $__kata; // Jika ada balik
             }
-            $__kata__ = $this->Del_Derivation_Suffixes($__kata);
+            $__kata__ = $this->hapusAkhiran2($__kata);
             if($this->cekKamus($__kata__)){
                 return $__kata__;
             }
@@ -205,7 +242,7 @@ function Del_Derivation_Prefix($kata){
             if($this->cekKamus($__kata)){
                 return $__kata; // Jika ada balik
             }
-            $__kata__ = $this->Del_Derivation_Suffixes($__kata);
+            $__kata__ = $this->hapusAkhiran2($__kata);
             if($this->cekKamus($__kata__)){
                 return $__kata__;
             }
@@ -216,7 +253,7 @@ function Del_Derivation_Prefix($kata){
             if($this->cekKamus($__kata)){
                 return $__kata; // Jika ada balik
             }
-            $__kata__ = $this->Del_Derivation_Suffixes($__kata);
+            $__kata__ = $this->hapusAkhiran2($__kata);
             if($this->cekKamus($__kata__)){
                 return $__kata__;
             }
@@ -225,7 +262,7 @@ function Del_Derivation_Prefix($kata){
             if($this->cekKamus($__kata)){
                 return $__kata; // Jika ada balik
             }
-            $__kata__ = $this->Del_Derivation_Suffixes($__kata);
+            $__kata__ = $this->hapusAkhiran2($__kata);
             if($this->cekKamus($__kata__)){
                 return $__kata__;
             }
@@ -236,7 +273,7 @@ function Del_Derivation_Prefix($kata){
             if($this->cekKamus($__kata)){
                 return $__kata; // Jika ada balik
             }
-            $__kata__ = $this->Del_Derivation_Suffixes($__kata);
+            $__kata__ = $this->hapusAkhiran2($__kata);
             if($this->cekKamus($__kata__)){
                 return $__kata__;
             }
@@ -246,7 +283,7 @@ function Del_Derivation_Prefix($kata){
                 return $__kata; // Jika ada balik
             }
             
-            $__kata__ = $this->Del_Derivation_Suffixes($__kata);
+            $__kata__ = $this->hapusAkhiran2($__kata);
             if($this->cekKamus($__kata__)){
                 return $__kata__;
             }
@@ -263,19 +300,21 @@ function stemming($kalimat){
     if($cekKata == true){ // Cek Kamus
         $hasil[] = $kata; // Jika Ada maka kata tersebut adalah kata dasar
     }else{ //jika tidak ada dalam kamus maka dilakukan stemming
-        $kata = $this->Del_Inflection_Suffixes($kata);
+        $kata = $this->hapusAkhiran1($kata);
         if($this->cekKamus($kata)){
             $hasil[] = $kata;
         }
-        
-        $kata = $this->Del_Derivation_Suffixes($kata);
-        if($this->cekKamus($kata)){
-            $hasil[] = $kata;
-        }
-        
-        $kata = $this->Del_Derivation_Prefix($kata);
-        if($this->cekKamus($kata)){
-            $hasil[] = $kata;
+        else {
+            $kata = $this->hapusAkhiran2($kata);
+            if($this->cekKamus($kata)){
+                $hasil[] = $kata;
+            }
+            else {
+                $kata = $this->hapusAwalan($kata);
+                if($this->cekKamus($kata)){
+                    $hasil[] = $kata;
+                }
+            }
         }
     }
 }
