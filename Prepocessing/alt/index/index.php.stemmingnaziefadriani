@@ -6,7 +6,7 @@ define('DS', DIRECTORY_SEPARATOR);
 define('DIR', dirname(__FILE__) . DS);
 include_once DIR.'include'.DS.'config.php';
 include_once DIR.'lib'.DS.'database.class.php';
-include_once DIR.'lib'.DS.'core.naziefadriani.php';
+include_once DIR.'lib'.DS.'stemming.naziefadriani.php';
 
 $Core = new Core(); // Membuat variabel baru untuk class Core
 
@@ -23,12 +23,16 @@ while($result = $cekQuran->fetch_array())
 	echo "<font color = red>";
 	// var_dump($terjemahan);
 	// $Core->insertFiltering($idAyat,$terjemahan);
-	// print($terjemahanAsli."<br>");
+	print($terjemahanAsli."<br>");
 	echo "</font>";
 	//$terjemahan = $Core->stemming($terjemahan);
-	$terjemahan = $Core->stemming(trim($terjemahan));
-	// print($idAyat."<br>");
-	// print($terjemahan."<br>");
+	$split = explode(' ', $terjemahan);
+	foreach ($split as $key => $kata) {
+		# code...
+		$hasil[] = $Core->stemming(trim($kata));
+	}
+	$terjemahan = implode(' ', $hasil);
+	// $terjemahan = $Core->stemming(trim($terjemahan));
 	print($idAyat." ".$terjemahan."<br>");
 }
 //$kataJadi = $Core->kataAkhir();

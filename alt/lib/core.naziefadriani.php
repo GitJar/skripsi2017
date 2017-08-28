@@ -14,21 +14,27 @@ class Core extends Database
         $this->link = parent::connect();
     }
 
+    //semua
     /*function cekQuran(){
-        $query = $this->link->query("SELECT idAyat, Terjemahan FROM albaqarah where idAyat !=31 and idAyat!=61 and idAyat!=109 and idAyat!=114 and idAyat!=120 and idAyat!=148 and idAyat!=164 and idAyat!=197 and idAyat!=207 and idAyat!=215 and idAyat!=217 and idAyat!=247 and idAyat!=257 and idAyat!=264 and idAyat!=268 and idAyat!=270 and idAyat!=273 and idAyat!=282");
+        $query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_filtering)");
         $result = mysqli_num_rows($query);
         return $query;
     }*/
+
+    // Atasi Error 1
     function cekQuran(){
-        $query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_filtering where idAyat !=109 and idAyat!=148 and idAyat!=164 and idAyat!=207 and idAyat!=217 and idAyat!=247 and idAyat!=264 and idAyat!=282");
+        $query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_filtering where idAyat not in (109, 148,164,207,217,247,264,282)");
         $result = mysqli_num_rows($query);
         return $query;
     }
-/*    function cekQuran(){
-        $query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_filtering where idAyat=30");
+
+    // Select 1
+    /*function cekQuran(){
+        $query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_filtering where idAyat = 282");
         $result = mysqli_num_rows($query);
         return $query;
     }*/
+
     function insertFiltering($d,$t){
         $query = $this->link->query("INSERT INTO temp_filtering  VALUES ('$d','$t')");
     }
