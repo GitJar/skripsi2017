@@ -3,32 +3,35 @@ if(!defined('core')){
     exit('No Dice!');
 }
 
-class Core extends Database{
+class Core extends Database
+{
     protected $link;
     
+    public $error = '';
+    public $success = '';
     function __construct()
     {
         $this->link = parent::connect();
     }
 
     //semua
-    function cekQuran(){
-        $query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_filtering");
-        // $result = mysqli_num_rows($query);
-        return $query;
-    }
-
-    // Atasi Error 1
     /*function cekQuran(){
-        $query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_filtering where idAyat not in (109, 148,164,207,217,247,264,282)");
-        // $result = mysqli_num_rows($query);
+        $query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_filtering)");
+        $result = mysqli_num_rows($query);
         return $query;
     }*/
+
+    // Atasi Error 1
+    function cekQuran(){
+        $query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_filtering where idAyat not in (109, 148,164,207,217,247,264,282)");
+        $result = mysqli_num_rows($query);
+        return $query;
+    }
 
     // Select 1
     /*function cekQuran(){
         $query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_filtering where idAyat = 282");
-        // $result = mysqli_num_rows($query);
+        $result = mysqli_num_rows($query);
         return $query;
     }*/
 
