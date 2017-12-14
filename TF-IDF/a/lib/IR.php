@@ -5,14 +5,37 @@
 
 */
 
-define("DOC_ID", 0);
-define("TERM_POSITION", 1);
+if(!defined('core')) {
+	exit('No Dice!');
+} 
 
-class IR {
+class IR extends Database{
+	protected $link;
 
 	public $num_docs = 0;
-
 	public $corpus_terms = array();
+
+	function __construct()
+	{
+		$this->link = parent::connect();
+	}
+
+	function cekTerm(){
+		$query = $this->link->query("SELECT * FROM temp_term order by kataTerjemahan");
+		return $query;
+	}
+
+	function countTerm(){
+		$query = $this->link->query("SELECT * FROM temp_term order by kataTerjemahan");
+		$rowCnt = $query->num_rows;
+		return $rowCnt;	
+	}
+
+	function cekJmlAyat(){
+		$query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_stemming");
+		$result = mysqli_num_rows($query);
+		return $result;
+	}
 
 	function show_docs($doc) {
 		$jumlah_doc = count($doc);
@@ -62,7 +85,7 @@ function show_index() {
 
 */
 function tf($term) {
-	$term = strtolower($term);
+	// $term = strtolower($term);
 	return count($this->corpus_terms[$term]);
 }
 
@@ -79,10 +102,9 @@ function tf($term) {
 }*/
 
 function ndw($term){
-	$term = strtolower($term);
 	$doc_locations = $this->corpus_terms[$term];
-	$num_locations = count($doc_locations);
-	$docs_with_term = array();
+	// $num_locations = count($doc_locations);
+	// $docs_with_term = array();
 	$temp = array();
 	$i=0;
 	// print_r($doc_locations);
@@ -113,7 +135,7 @@ function ndw($term){
 *
 */
 function idf($term) {
-	return log($this->num_docs)/$this->ndw($term);
+	return log10(($this->num_docs)/$this->ndw($term));
 }
 
 }

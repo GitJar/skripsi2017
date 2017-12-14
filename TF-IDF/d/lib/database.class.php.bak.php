@@ -74,8 +74,29 @@ function show_index() {
 	foreach($this->corpus_terms AS $term => $doc_locations) {
 		echo "<b>$term:</b> ";
 		foreach($doc_locations AS $doc_location)
-			echo "{".$doc_location[DOC_ID].", ".$doc_location[TERM_POSITION]."} ";
+			echo "{".$doc_location[DOC_ID].", ".$doc_location[TERM_POSITION]."} ";	
 		echo "<br />";
+	}
+
+	$pos = 0;
+	$tempArr = array();
+	$tempArrCount = array();
+	foreach ($this->corpus_terms as $value) {
+		for ($i=0; $i < count($value); $i++) { 
+			$tempArr[$pos][$i] = $value[$i][0];
+			// echo $value[$i][0];
+			// echo "<br>";
+		}
+		$tempArrCount[$pos] = array_count_values($tempArr[$pos]);
+		$pos++;
+	}
+
+	// print_r($tempArrCount);
+
+	foreach ($tempArrCount as $value) {
+		foreach ($value as $index => $arrVal) {
+			echo $index." = >".$arrVal."<br>";
+		}
 	}
 }
 
@@ -85,7 +106,7 @@ function show_index() {
 
 */
 function tf($term) {
-	$term = strtolower($term);
+	// $term = strtolower($term);
 	return count($this->corpus_terms[$term]);
 }
 
@@ -102,10 +123,10 @@ function tf($term) {
 }*/
 
 function ndw($term){
-	$term = strtolower($term);
+	// $term = strtolower($term);
 	$doc_locations = $this->corpus_terms[$term];
-	$num_locations = count($doc_locations);
-	$docs_with_term = array();
+	// $num_locations = count($doc_locations);
+	// $docs_with_term = array();
 	$temp = array();
 	$i=0;
 	// print_r($doc_locations);
@@ -136,7 +157,7 @@ function ndw($term){
 *
 */
 function idf($term) {
-	return log10(($this->num_docs)/$this->ndw($term));
+	return log10($this->num_docs)/$this->ndw($term);
 }
 
 }
