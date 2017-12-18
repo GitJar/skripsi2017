@@ -15,18 +15,18 @@ class Core extends Database
     }
 
     //semua
-    /*function cekQuran(){
+    function cekQuran(){
         $query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_filtering)");
         $result = mysqli_num_rows($query);
         return $query;
-    }*/
+    }
 
     // Atasi Error 1
-    function cekQuran(){
+    /*function cekQuran(){
         $query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_filtering where idAyat not in (109, 148,164,207,217,247,264,282)");
         $result = mysqli_num_rows($query);
         return $query;
-    }
+    }*/
 
     // Select 1
     /*function cekQuran(){
@@ -34,6 +34,12 @@ class Core extends Database
         $result = mysqli_num_rows($query);
         return $query;
     }*/
+
+    function selectStemming(){
+         $query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_stemming");
+        $result = mysqli_num_rows($query);
+        return $query;
+    }
 
     function insertFiltering($d,$t){
         $query = $this->link->query("INSERT INTO temp_filtering  VALUES ('$d','$t')");

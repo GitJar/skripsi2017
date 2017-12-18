@@ -73,31 +73,18 @@ function show_index() {
 
 	foreach($this->corpus_terms AS $term => $doc_locations) {
 		echo "<b>$term:</b> ";
-
-		foreach($doc_locations AS $doc_location){
-			echo "{".$doc_location[DOC_ID].", ".$doc_location[TERM_POSITION]."} ";
-		}
-			//mulai
-
-			//end	
+		foreach($doc_locations AS $doc_location)
+			echo "{".$doc_location[DOC_ID].", ".$doc_location[TERM_POSITION]."} ";	
 		echo "<br />";
 	}
 
-	
-}
-
-function indexAyat(){
-	ksort($this->corpus_terms);
 	$pos = 0;
 	$tempArr = array();
 	$tempArrCount = array();
-	// print_r( $this->corpus_terms);
-	foreach ($this->corpus_terms as $term) {
-		// echo "$term";
-		// print_r($this->corpus_terms);
-		for ($i=0; $i < count($term); $i++) { 
-			$tempArr[$pos][$i] = $term[$i][0];
-			// echo $term[$i][0];
+	foreach ($this->corpus_terms as $value) {
+		for ($i=0; $i < count($value); $i++) { 
+			$tempArr[$pos][$i] = $value[$i][0];
+			// echo $value[$i][0];
 			// echo "<br>";
 		}
 		$tempArrCount[$pos] = array_count_values($tempArr[$pos]);
@@ -107,10 +94,8 @@ function indexAyat(){
 	// print_r($tempArrCount);
 
 	foreach ($tempArrCount as $value) {
-		// print_r( $tempArrCount);
-		echo "<br>";
 		foreach ($value as $index => $arrVal) {
-			echo "Ayat ".$index." Jumlah ".$arrVal."<br>";
+			echo $index." = >".$arrVal."<br>";
 		}
 	}
 }

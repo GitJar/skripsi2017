@@ -5,37 +5,14 @@
 
 */
 
-if(!defined('core')) {
-	exit('No Dice!');
-} 
+define("DOC_ID", 0);
+define("TERM_POSITION", 1);
 
-class IR extends Database{
-	protected $link;
+class IR {
 
 	public $num_docs = 0;
+
 	public $corpus_terms = array();
-
-	function __construct()
-	{
-		$this->link = parent::connect();
-	}
-
-	function cekTerm(){
-		$query = $this->link->query("SELECT * FROM temp_term order by kataTerjemahan");
-		return $query;
-	}
-
-	function countTerm(){
-		$query = $this->link->query("SELECT * FROM temp_term order by kataTerjemahan");
-		$rowCnt = $query->num_rows;
-		return $rowCnt;	
-	}
-
-	function cekJmlAyat(){
-		$query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_stemming");
-		$result = mysqli_num_rows($query);
-		return $result;
-	}
 
 	function show_docs($doc) {
 		$jumlah_doc = count($doc);
@@ -73,45 +50,9 @@ function show_index() {
 
 	foreach($this->corpus_terms AS $term => $doc_locations) {
 		echo "<b>$term:</b> ";
-
-		foreach($doc_locations AS $doc_location){
+		foreach($doc_locations AS $doc_location)
 			echo "{".$doc_location[DOC_ID].", ".$doc_location[TERM_POSITION]."} ";
-		}
-			//mulai
-
-			//end	
 		echo "<br />";
-	}
-
-	
-}
-
-function indexAyat(){
-	ksort($this->corpus_terms);
-	$pos = 0;
-	$tempArr = array();
-	$tempArrCount = array();
-	// print_r( $this->corpus_terms);
-	foreach ($this->corpus_terms as $term) {
-		// echo "$term";
-		// print_r($this->corpus_terms);
-		for ($i=0; $i < count($term); $i++) { 
-			$tempArr[$pos][$i] = $term[$i][0];
-			// echo $term[$i][0];
-			// echo "<br>";
-		}
-		$tempArrCount[$pos] = array_count_values($tempArr[$pos]);
-		$pos++;
-	}
-
-	// print_r($tempArrCount);
-
-	foreach ($tempArrCount as $value) {
-		// print_r( $tempArrCount);
-		echo "<br>";
-		foreach ($value as $index => $arrVal) {
-			echo "Ayat ".$index." Jumlah ".$arrVal."<br>";
-		}
 	}
 }
 
@@ -121,7 +62,7 @@ function indexAyat(){
 
 */
 function tf($term) {
-	// $term = strtolower($term);
+	$term = strtolower($term);
 	return count($this->corpus_terms[$term]);
 }
 
@@ -130,21 +71,21 @@ function tf($term) {
 *
 */
 
-/*function grabArray($arr){
+function grabArray($arr){
 	$temp = array();
 	for ($i=0; $i < count($arr); $i++) { 
 		$temp[$i] = $arr[$i];
 	}
-}*/
+}
 
 function ndw($term){
-	// $term = strtolower($term);
+	$term = strtolower($term);
 	$doc_locations = $this->corpus_terms[$term];
-	// $num_locations = count($doc_locations);
-	// $docs_with_term = array();
+	$num_locations = count($doc_locations);
+	$docs_with_term = array();
 	$temp = array();
 	$i=0;
-	// print_r($doc_locations);
+	print_r($doc_locations);
 	// echo("test");
 	// echo("count :". count($doc_locations));
 
@@ -172,7 +113,7 @@ function ndw($term){
 *
 */
 function idf($term) {
-	return log10($this->num_docs)/$this->ndw($term);
+	return log($this->num_docs)/$this->ndw($term);
 }
 
 }

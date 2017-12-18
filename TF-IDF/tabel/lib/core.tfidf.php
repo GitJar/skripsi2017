@@ -97,22 +97,62 @@ function indexAyat(){
 		// print_r($this->corpus_terms);
 		for ($i=0; $i < count($term); $i++) { 
 			$tempArr[$pos][$i] = $term[$i][0];
-			// echo $term[$i][0];
+			// echo $value[$i][0];
 			// echo "<br>";
 		}
 		$tempArrCount[$pos] = array_count_values($tempArr[$pos]);
 		$pos++;
 	}
-
+// echo '<pre>';
 	// print_r($tempArrCount);
 
-	foreach ($tempArrCount as $value) {
-		// print_r( $tempArrCount);
-		echo "<br>";
-		foreach ($value as $index => $arrVal) {
-			echo "Ayat ".$index." Jumlah ".$arrVal."<br>";
+foreach ($tempArrCount as $array1) {
+	// foreach ($array1 as $array2) {
+		// echo '<br>';
+		// var_dump($array1);
+
+		for ($i=1; $i < 286; $i++) { 
+
+			if(isset($array1[$i])) {
+				echo $array1[$i];
+			}
+			else {
+				echo '0';
+			}
 		}
-	}
+		echo '<br>';
+	// }
+}
+
+	// foreach ($tempArrCount as $value) {
+	// 	// print_r( $tempArrCount);
+	// 		$j=1;
+	// 		$max=286;
+	// 	foreach ($value as $indexx => $arrVal) {
+	// 		for ($i=$j; $i <=$max ; $i++) { 
+	// 			# code...
+	// 			// echo "<br>".$i."<br>";
+	// 			if ($i == $indexx) {
+	// 				$j=$indexx+1;
+	// 				// echo "Ayat ".$indexx." Jumlah ".$arrVal;
+	// 				echo $arrVal;
+	// 				# code...
+	// 				break;
+	// 			}
+	// 			else {
+	// 				echo "0";
+	// 			}
+	// 		}
+	// 		/*for ($a=$j;$i<=286;$i++)
+	// 			echo "0";*/
+	// 		// echo $j;
+	// 		// echo "<br>";
+	// 	}
+	// 	/*foreach ($value as $index => $arrVal) {
+	// 		echo "Ayat ".$index." Jumlah ".$arrVal."<br>";
+	// 	}*/
+	// 	echo "<br>";
+	// }
 }
 
 /*
