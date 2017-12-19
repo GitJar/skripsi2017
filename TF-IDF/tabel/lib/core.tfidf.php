@@ -103,27 +103,47 @@ function indexAyat(){
 		$tempArrCount[$pos] = array_count_values($tempArr[$pos]);
 		$pos++;
 	}
-// echo '<pre>';
-	// print_r($tempArrCount);
 
+	//START VIEW
+// echo '<pre>';
+	$i = 0;
+	$arr = array();
+	foreach ($tempArrCount as $value) {
+		for ($c=0; $c < 286; $c++) { 
+			if(isset($value[$c])){
+				$arr[$i][$c] = $value[$c];
+			}else{
+				$arr[$i][$c] = '0';
+			}
+		}
+		$i++;
+	}
+	// echo "<pre>";
+	// print_r($arr);
+
+	return $arr;
+
+/*echo "<table>";
 foreach ($tempArrCount as $array1) {
 	// foreach ($array1 as $array2) {
 		// echo '<br>';
+	echo "<tr>";
 		// var_dump($array1);
 
-		for ($i=1; $i < 286; $i++) { 
+		for ($i=0; $i < 286; $i++) { 
 
 			if(isset($array1[$i])) {
-				echo $array1[$i];
+				echo "<td>".$array1[$i]."</td>";
 			}
 			else {
-				echo '0';
+				echo "<td>".'0'."</td>";
 			}
 		}
-		echo '<br>';
 	// }
+		echo "</tr>";
 }
-
+		echo "</table>";*/
+		//END VIEW
 	// foreach ($tempArrCount as $value) {
 	// 	// print_r( $tempArrCount);
 	// 		$j=1;
@@ -153,6 +173,30 @@ foreach ($tempArrCount as $array1) {
 	// 	}*/
 	// 	echo "<br>";
 	// }
+}
+
+function show_indexAyat(){
+	$this->indexAyat();
+	//START VIEW
+// echo '<pre>';
+	// print_r($tempArrCount);
+foreach ($tempArrCount as $array1) {
+	// foreach ($array1 as $array2) {
+		echo '<br>';
+		// var_dump($array1);
+
+		for ($i=0; $i < 286; $i++) { 
+
+			if(isset($array1[$i])) {
+				echo $array1[$i];
+			}
+			else {
+				echo '0';
+			}
+		}
+	// }
+}
+	//END VIEW
 }
 
 /*

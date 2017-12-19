@@ -11,13 +11,15 @@ include_once DIR.'lib'.DS.'database.class.php';
 include_once DIR.'lib'.DS.'core.tfidf.php';
 $ir = new IR();
 $cekTerm = $ir->cekTerm();
+// print_r($cekTerm);
 $countTerm = $ir->countTerm();
 print("Jumlah Term = ".$countTerm);
 echo "<br>";
 $ir->create_index($D);
 echo "<br>";
-$ir->indexAyat();
+$arr = $ir->indexAyat();
 echo "<br>";
+// $indexAyat = $ir->indexAyat();
  ?>
 <html>
 <head>
@@ -57,8 +59,9 @@ tr:nth-child(even) {
       ?><th><?php echo $i ?></th><?php 
     } ?>
   </tr>
-  <?php 
-  $no = 1;
+
+<?php 
+  $no = 0;
   while ($result= $cekTerm->fetch_assoc()) {
     # code...
     $term = $result['kataTerjemahan'];
@@ -69,12 +72,16 @@ tr:nth-child(even) {
     $idf = $ir->idf($term);
     ?>
       <tr>
-        <td><?php echo $term ?></td> 
+        <td><?php echo $term ?></td>
         <?php 
-        for ($i=1; $i <= 286; $i++) { 
-          # code...
+        for ($i=0; $i < 286; $i++) { 
+            echo "<td>".$arr[$no][$i]."</td>";
         }
-         ?>       
+         ?>
+        <!-- <td><?php echo $no ?></td>  -->
+        <?php 
+        {
+        } ?>    
       </tr>
     <?php
     $no++;
@@ -84,6 +91,7 @@ tr:nth-child(even) {
     echo "Inverse Document Frequency of $term is $idf";
     echo "</p>";*/
   }
+
    ?>
 </table>
 

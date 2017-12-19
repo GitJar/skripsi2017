@@ -71,9 +71,11 @@ function show_index() {
 
 	ksort($this->corpus_terms);
 	$no=1;
+	// var_dump($this->corpus_terms);
 	foreach($this->corpus_terms AS $term => $doc_locations) {
 		echo "<b>$no."." $term:</b> ";
 		foreach($doc_locations AS $doc_location)
+			// $doc_loc = $doc_location[DOC_ID];
 			echo "{".$doc_location[DOC_ID].", ".$doc_location[TERM_POSITION]."} ";	
 		echo "<br />";
 		$no++;
