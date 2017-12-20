@@ -50,8 +50,12 @@ tr:nth-child(even) {
 
 <table>
   <tr>
+    <th rowspan="2">No</th>
     <th rowspan="2">Term</th>
-    <th colspan="286">Ayat</th>
+    <th colspan="286">Ayat (D)</th>
+    <th rowspan="2">TF</th>
+    <th rowspan="2">DF</th>
+    <th rowspan="2">IDF *LOG(D/DF)</th>
   </tr>
   <tr>
     <?php for ($i=1; $i <= 286; $i++) { 
@@ -61,7 +65,8 @@ tr:nth-child(even) {
   </tr>
 
 <?php 
-  $no = 0;
+  $id = 0;
+  $no = 1;
   while ($result= $cekTerm->fetch_assoc()) {
     # code...
     $term = $result['kataTerjemahan'];
@@ -72,18 +77,19 @@ tr:nth-child(even) {
     $idf = $ir->idf($term);
     ?>
       <tr>
+        <td><?php echo $no ?></td>
         <td><?php echo $term ?></td>
         <?php 
         for ($i=0; $i < 286; $i++) { 
-            echo "<td>".$arr[$no][$i]."</td>";
+            echo "<td>".$arr[$id][$i]."</td>";
         }
          ?>
-        <!-- <td><?php echo $no ?></td>  -->
-        <?php 
-        {
-        } ?>    
+        <td><?php echo $tf ?></td>
+        <td><?php echo $ndw ?></td>
+        <td><?php echo $idf ?></td>
       </tr>
     <?php
+    $id++;
     $no++;
     /*echo "<p>";
     echo "Term Frequency of '$term' is $tf<br />";

@@ -175,30 +175,6 @@ foreach ($tempArrCount as $array1) {
 	// }
 }
 
-function show_indexAyat(){
-	$this->indexAyat();
-	//START VIEW
-// echo '<pre>';
-	// print_r($tempArrCount);
-foreach ($tempArrCount as $array1) {
-	// foreach ($array1 as $array2) {
-		echo '<br>';
-		// var_dump($array1);
-
-		for ($i=0; $i < 286; $i++) { 
-
-			if(isset($array1[$i])) {
-				echo $array1[$i];
-			}
-			else {
-				echo '0';
-			}
-		}
-	// }
-}
-	//END VIEW
-}
-
 /*
 * Menghitung Term Frequency (TF)
 *
