@@ -64,6 +64,7 @@ tr:nth-child(even) {
 <?php 
   $id = 0;
   $no = 1;
+  $c = 1;
   while ($result= $cekTerm->fetch_assoc()) {
     # code...
     $term = $result['kataTerjemahan'];
@@ -72,18 +73,22 @@ tr:nth-child(even) {
     // $ndw = $ir->ndw($term);
     $ndw   = $ir->ndw($term);
     $idf = $ir->idf($term);
+    for ($i=0; $i < 286; $i++) { 
+      # code...
+      $arkali[$id][$i] = $arr[$id][$i]*$idf;
+    }
     ?>
       <tr>
         <td><?php echo $no ?></td>
         <td><?php echo $term ?></td>
         <?php 
         for ($i=0; $i < 286; $i++) { 
-          $arkali[$id][$i] = $arr[$id][$i]*$idf;
             echo "<td>".$arkali[$id][$i]."</td>";
         }
          ?>
       </tr>
     <?php
+    // echo $arkali[2][30]+$arkali[1][10]."<br>";
     $id++;
     $no++;
     /*echo "<p>";
@@ -92,9 +97,33 @@ tr:nth-child(even) {
     echo "Inverse Document Frequency of $term is $idf";
     echo "</p>";*/
   }
+  ?>
+  <tr>
+    <td></td>
+    <td>Jumlah</td>
+    <?php
+  for ($i=0; $i < 286; $i++) { 
+  $jumlah = 0;
+  $ayat = $i+1;
+  # code...
+        for ($id=0; $id < $countTerm; $id++) { 
+          # code...
+          // echo $arkali[$id][$i]." ";
+          $jumlah += $arkali[$id][$i];
+        }
+        echo "<td>".$jumlah."</td>";
+        // $ir->insertTFIDF($ayat,$jumlah);
+        // echo $arkali[$id][$i];
+        // echo "<br><br>";
+  }
 
    ?>
+   </tr>
 </table>
-
+<?php 
+    /*for ($id=0; $id < $countTerm; $id++) { 
+      echo $arkali[$id][$i];
+    }*/
+ ?>
 </body>
 </html>

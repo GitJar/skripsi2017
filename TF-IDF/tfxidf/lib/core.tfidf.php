@@ -44,6 +44,10 @@ class IR extends Database{
 		}
 	}
 
+	function insertTFIDF($a,$h){
+        $query = $this->link->query("INSERT INTO hasil_tfidf  VALUES ('$a','$h')");
+    }
+
 /*
 * Membuat  Index
 */
