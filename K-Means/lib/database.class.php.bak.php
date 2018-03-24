@@ -27,13 +27,13 @@ class IR extends Database{
 
 	function countTerm(){
 		$query = $this->link->query("SELECT * FROM temp_term order by kataTerjemahan");
-		$rowCnt = $query->num_rows();
+		$rowCnt = $query->num_rows;
 		return $rowCnt;	
 	}
 
 	function cekJmlAyat(){
 		$query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_stemming");
-		$result = $query->num_rows();
+		$result = mysqli_num_rows($query);
 		return $result;
 	}
 
@@ -43,10 +43,6 @@ class IR extends Database{
 			echo "Dokumen ke-$i : $doc[$i] <br>";
 		}
 	}
-
-	function insertTFIDF($a,$h){
-        $query = $this->link->query("INSERT INTO hasil_tfidf  VALUES ('$a','$h')");
-    }
 
 /*
 * Membuat  Index
@@ -77,30 +73,17 @@ function show_index() {
 
 	foreach($this->corpus_terms AS $term => $doc_locations) {
 		echo "<b>$term:</b> ";
-
-		foreach($doc_locations AS $doc_location){
-			echo "{".$doc_location[DOC_ID].", ".$doc_location[TERM_POSITION]."} ";
-		}
-			//mulai
-
-			//end	
+		foreach($doc_locations AS $doc_location)
+			echo "{".$doc_location[DOC_ID].", ".$doc_location[TERM_POSITION]."} ";	
 		echo "<br />";
 	}
 
-	
-}
-
-function indexAyat(){
-	ksort($this->corpus_terms);
 	$pos = 0;
 	$tempArr = array();
 	$tempArrCount = array();
-	// print_r( $this->corpus_terms);
-	foreach ($this->corpus_terms as $term) {
-		// echo "$term";
-		// print_r($this->corpus_terms);
-		for ($i=0; $i < count($term); $i++) { 
-			$tempArr[$pos][$i] = $term[$i][0];
+	foreach ($this->corpus_terms as $value) {
+		for ($i=0; $i < count($value); $i++) { 
+			$tempArr[$pos][$i] = $value[$i][0];
 			// echo $value[$i][0];
 			// echo "<br>";
 		}
@@ -108,75 +91,13 @@ function indexAyat(){
 		$pos++;
 	}
 
-	//START VIEW
-// echo '<pre>';
-	$i = 0;
-	$arr = array();
+	// print_r($tempArrCount);
+
 	foreach ($tempArrCount as $value) {
-		for ($c=0; $c < 286; $c++) { 
-			if(isset($value[$c])){
-				$arr[$i][$c] = $value[$c];
-			}else{
-				$arr[$i][$c] = '0';
-			}
+		foreach ($value as $index => $arrVal) {
+			echo $index." = >".$arrVal."<br>";
 		}
-		$i++;
 	}
-	// echo "<pre>";
-	// print_r($arr);
-
-	return $arr;
-
-/*echo "<table>";
-foreach ($tempArrCount as $array1) {
-	// foreach ($array1 as $array2) {
-		// echo '<br>';
-	echo "<tr>";
-		// var_dump($array1);
-
-		for ($i=0; $i < 286; $i++) { 
-
-			if(isset($array1[$i])) {
-				echo "<td>".$array1[$i]."</td>";
-			}
-			else {
-				echo "<td>".'0'."</td>";
-			}
-		}
-	// }
-		echo "</tr>";
-}
-		echo "</table>";*/
-		//END VIEW
-	// foreach ($tempArrCount as $value) {
-	// 	// print_r( $tempArrCount);
-	// 		$j=1;
-	// 		$max=286;
-	// 	foreach ($value as $indexx => $arrVal) {
-	// 		for ($i=$j; $i <=$max ; $i++) { 
-	// 			# code...
-	// 			// echo "<br>".$i."<br>";
-	// 			if ($i == $indexx) {
-	// 				$j=$indexx+1;
-	// 				// echo "Ayat ".$indexx." Jumlah ".$arrVal;
-	// 				echo $arrVal;
-	// 				# code...
-	// 				break;
-	// 			}
-	// 			else {
-	// 				echo "0";
-	// 			}
-	// 		}
-	// 		/*for ($a=$j;$i<=286;$i++)
-	// 			echo "0";*/
-	// 		// echo $j;
-	// 		// echo "<br>";
-	// 	}
-	// 	/*foreach ($value as $index => $arrVal) {
-	// 		echo "Ayat ".$index." Jumlah ".$arrVal."<br>";
-	// 	}*/
-	// 	echo "<br>";
-	// }
 }
 
 /*

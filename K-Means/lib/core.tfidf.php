@@ -27,13 +27,13 @@ class IR extends Database{
 
 	function countTerm(){
 		$query = $this->link->query("SELECT * FROM temp_term order by kataTerjemahan");
-		$rowCnt = $query->num_rows();
+		$rowCnt = $query->num_rows;
 		return $rowCnt;	
 	}
 
 	function cekJmlAyat(){
 		$query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_stemming");
-		$result = $query->num_rows();
+		$result = mysqli_num_rows($query);
 		return $result;
 	}
 
