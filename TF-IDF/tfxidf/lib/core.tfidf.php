@@ -236,7 +236,7 @@ function ndw($term){
 *
 */
 function idf($term) {
-	return log10($this->num_docs)/$this->ndw($term);
+	return log10(($this->num_docs)/$this->ndw($term));
 }
 
 }

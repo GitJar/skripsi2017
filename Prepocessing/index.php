@@ -11,8 +11,8 @@ include_once DIR.'lib'.DS.'core.naziefadriani.php';
 $Core = new Core(); // Membuat variabel baru untuk class Core
 
 // Memanggil fungsi cek kamus (cetak awal)
-// $cekQuran = $Core->cekQuran(); //ini yang benar
-$cekQuran = $Core->selectStemming(); //ini select selesai
+$cekQuran = $Core->cekQuran(); //ini yang benar
+// $cekQuran = $Core->selectStemming(); //ini select selesai
 while($result = $cekQuran->fetch_assoc())
 {
 	$idAyat = $result['idAyat'];
@@ -29,8 +29,8 @@ while($result = $cekQuran->fetch_assoc())
 	//$terjemahan = $Core->stemming($terjemahan);
 	// $terjemahan = $Core->stemming(trim($terjemahan));
 	// print($idAyat."<br>");
-	// print($terjemahan."<br>");
-	print($idAyat." ".$terjemahan."<br>");
+	print($terjemahan."<br>");
+	// print($idAyat." ".$terjemahan."<br>");
 }
 //$kataJadi = $Core->kataAkhir();
 $akhir = microtime(true);

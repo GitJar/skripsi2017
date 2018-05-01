@@ -16,10 +16,16 @@ class Core extends Database
 
     //semua
     function cekQuran(){
-        $query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_filtering)");
+        $query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_filtering");
         $result = mysqli_num_rows($query);
         return $query;
     }
+
+    /*function cekQuran1(){
+        $query = $this->link->query("SELECT idAyat, Terjemahan FROM albaqarah)");
+        $result = mysqli_num_rows($query);
+        return $query;
+    }*/
 
     // Atasi Error 1
     /*function cekQuran(){

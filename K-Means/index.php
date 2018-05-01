@@ -21,17 +21,17 @@ include_once "getdata.php";
 <!-- main content area -->   
 <div id="main" class="wrapper clearfix">   
 	<!-- content area -->    
-	<section id="content">
+<!-- 	<section id="content">
     	<main>
- <div id="data_panel">
+ <div id="data_panel"> -->
   <!-- <fieldset>
    <legend>
     Input
    </legend> -->
-   <textarea cols="40" id="data" rows="8" style="display: none">
+   <textarea cols="40" id="data" rows="8">
    </textarea>
   <!-- </fieldset> -->
-  <fieldset id="km_params">
+  <!-- <fieldset id="km_params"> -->
   Number of clusters (K):  
   <select id="KM-K">
     <option value="2">2</option>
@@ -43,7 +43,7 @@ include_once "getdata.php";
     <option value="8">8</option>
     <option value="9">9</option>
   </select>
- </fieldset>
+ <!-- </fieldset> -->
  </div>
  <div id="cluster_button" style="">
   <div style="display:table-row; width:100%;text-align:center;">
@@ -63,7 +63,7 @@ include_once "getdata.php";
    <pre>
    
    </fieldset>
- </div>
+ <!-- </div> -->
 
   <span class="AgExposePic">
    <!--#include virtual="../../Ads/Ag Expose Picture Yellow.log" -->

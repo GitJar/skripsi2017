@@ -8,7 +8,6 @@ $query = "SELECT CONCAT(idAyat,CONCAT(';',CONCAT(hasil))) gabung FROM hasil_tfid
 
 // $query = "SELECT * FROM hasil_tfidf";
 $result = mysqli_query($connect,$query);
-
 $getArrH = array();
 while ($row = mysqli_fetch_assoc($result)){
 $getArrH[] = $row;
@@ -19,6 +18,7 @@ $hslH = array_column($getArrH, 'gabung');
 // $jHslH =  implode("\n", $hslH);
 
 $jHslH = json_encode($hslH);
+print_r($jHslH);
 
 // foreach ($getArrH as $key => $value) {
 // 	# code...
