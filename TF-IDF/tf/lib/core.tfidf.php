@@ -21,18 +21,28 @@ class IR extends Database{
 	}
 
 	function cekTerm(){
-		$query = $this->link->query("SELECT * FROM temp_term order by kataTerjemahan");
+		$query = $this->link->query("SELECT * FROM temp_term_filter order by kataTerjemahan");
 		return $query;
 	}
 
+	function ayat(){
+		$query = $this->link->query("SELECT Terjemahan FROM temp_filtering");
+		return $query;	
+	}
+
+	function jumlahKata(){
+		$query = $this->link->query("SELECT jumlah FROM jumlahKata");
+		return $query;	
+	}
+
 	function countTerm(){
-		$query = $this->link->query("SELECT * FROM temp_term order by kataTerjemahan");
+		$query = $this->link->query("SELECT * FROM temp_term_filter order by kataTerjemahan");
 		$rowCnt = $query->num_rows;
 		return $rowCnt;	
 	}
 
 	function cekJmlAyat(){
-		$query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_stemming");
+		$query = $this->link->query("SELECT idAyat, Terjemahan FROM temp_filtering");
 		$result = mysqli_num_rows($query);
 		return $result;
 	}
@@ -173,6 +183,14 @@ foreach ($tempArrCount as $array1) {
 	// 	}*/
 	// 	echo "<br>";
 	// }
+}
+
+/*
+Menghitung Jumlah Kata
+*/
+
+function cekKata($term){
+	return str_word_count($term);
 }
 
 /*

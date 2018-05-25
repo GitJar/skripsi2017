@@ -20,15 +20,15 @@ echo "<br>";
 echo json_encode($json);*/
 $ir->create_index($D);
 
-/*echo "<p><b>Corpus</b></p>";
-$ir->show_docs($D);*/
+// echo "<p><b>Corpus</b></p>";
+// $ir->show_docs($D);
 
-/*echo "<p><b>Inverted Index:</b></p>";
-$ir->show_index();*/
+// echo "<p><b>Inverted Index:</b></p>";
+// $ir->show_index();
+// echo "<br>";
+// $ir->indexAyat();
 echo "<br>";
-$ir->indexAyat();
-echo "<br>";
-	/*$term = "blog";
+	// $term = "blog";
 	// print($terms."<br>");
 	$tf  = $ir->tf($term);
 	$ndw = $ir->ndw($term);
@@ -37,6 +37,6 @@ echo "<br>";
 	echo "Term Frequency of '$term' is $tf<br />";
 	echo "Number Of Documents with '$term' is $ndw<br />";
 	echo "Inverse Document Frequency of '$term' is $idf";
-	echo "</p>";*/
+	echo "</p>";
 
 ?>

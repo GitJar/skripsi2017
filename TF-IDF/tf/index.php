@@ -6,20 +6,22 @@ define("TERM_POSITION", 1);
 define('DS', DIRECTORY_SEPARATOR);
 define('DIR', dirname(__FILE__) . DS);
 include_once DIR.'include'.DS.'config.php';
-include_once DIR.'include'.DS.'dokumen.php';
+include_once DIR.'include'.DS.'dokumen2.php';
 include_once DIR.'lib'.DS.'database.class.php';
 include_once DIR.'lib'.DS.'core.tfidf.php';
 $ir = new IR();
 $cekTerm = $ir->cekTerm();
 // print_r($cekTerm);
 $countTerm = $ir->countTerm();
+$ayat = $ir->ayat();
 print("Jumlah Term = ".$countTerm);
 echo "<br>";
 $ir->create_index($D);
 echo "<br>";
 $arr = $ir->indexAyat();
 echo "<br>";
-// $indexAyat = $ir->indexAyat();
+$indexAyat = $ir->indexAyat();
+
  ?>
 <html>
 <head>
@@ -63,7 +65,24 @@ tr:nth-child(even) {
       ?><th><?php echo $i ?></th><?php 
     } ?>
   </tr>
-
+   <tr>
+   	<td>***</td>
+   	<td>Jumlah Kata</td>
+   	<?php 
+   	$arrAyat = array();
+   	$i = 0;
+   	while ($result= $ayat->fetch_assoc()) {
+		$terjemahan = $result['Terjemahan'];
+		$cekKata = $ir->cekKata($terjemahan);
+		$arrAyat[$i] = $cekKata;
+		$i++;
+	}
+	for ($i=0; $i < 286; $i++) { 
+	 	# code...
+		?><td><?php echo $arrAyat[$i] ?></td><?php 
+	 }
+   	 ?>
+   </tr>
 <?php 
   $id = 0;
   $no = 1;
